@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\ResponsiveImages;
+namespace Develoopin\MediaLibrary\Tests\ResponsiveImages;
 
-use Spatie\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class RegisteredResponsiveImagesTest extends TestCase
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\Support\UrlGenerator;
+namespace Develoopin\MediaLibrary\Support\UrlGenerator;
 
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Support\PathGenerator\PathGenerator;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Support\PathGenerator\PathGenerator;
 
 abstract class BaseUrlGenerator implements UrlGenerator
 {

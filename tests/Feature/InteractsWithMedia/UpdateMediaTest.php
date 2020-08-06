@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\InteractsWithMedia;
+namespace Develoopin\MediaLibrary\Tests\Feature\InteractsWithMedia;
 
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class UpdateMediaTest extends TestCase
 {

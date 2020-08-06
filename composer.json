@@ -1,5 +1,5 @@
 {
-    "name": "spatie/laravel-medialibrary",
+    "name": "develoopin/laravel-medialibrary",
     "description": "Associate files with Eloquent models",
     "keywords": [
         "spatie",
@@ -11,13 +11,18 @@
         "cms",
         "laravel"
     ],
-    "homepage": "https://github.com/spatie/laravel-medialibrary",
+    "homepage": "https://github.com/develoopin/laravel-medialibrary",
     "license": "MIT",
     "authors": [
         {
             "name": "Freek Van der Herten",
             "email": "freek@spatie.be",
             "homepage": "https://spatie.be",
+            "role": "Developer"
+        },
+        {
+            "name": "Develoopin",
+            "email": "develoopindonesia",
             "role": "Developer"
         }
     ],
@@ -60,18 +65,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\MediaLibrary\\": "src"
+            "Develoopin\\MediaLibrary\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\MediaLibrary\\Tests\\": "tests"
+            "Develoopin\\MediaLibrary\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\MediaLibrary\\MediaLibraryServiceProvider"
+                "Develoopin\\MediaLibrary\\MediaLibraryServiceProvider"
             ]
         }
     },

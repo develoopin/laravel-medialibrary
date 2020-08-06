@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Conversions;
+namespace Develoopin\MediaLibrary\Tests\Conversions;
 
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\MediaLibrary\Tests\TestSupport\testfiles\TestConversionFileNamer;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestSupport\testfiles\TestConversionFileNamer;
 
 class ConversionFileNamerTest extends TestCase
 {

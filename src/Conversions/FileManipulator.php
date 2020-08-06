@@ -1,19 +1,19 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions;
+namespace Develoopin\MediaLibrary\Conversions;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\Conversions\Events\ConversionHasBeenCompleted;
-use Spatie\MediaLibrary\Conversions\Events\ConversionWillStart;
-use Spatie\MediaLibrary\Conversions\ImageGenerators\ImageGeneratorFactory;
-use Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob;
-use Spatie\MediaLibrary\MediaCollections\Filesystem;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
-use Spatie\MediaLibrary\Support\ImageFactory;
-use Spatie\MediaLibrary\Support\TemporaryDirectory;
+use Develoopin\MediaLibrary\Conversions\Events\ConversionHasBeenCompleted;
+use Develoopin\MediaLibrary\Conversions\Events\ConversionWillStart;
+use Develoopin\MediaLibrary\Conversions\ImageGenerators\ImageGeneratorFactory;
+use Develoopin\MediaLibrary\Conversions\Jobs\PerformConversionsJob;
+use Develoopin\MediaLibrary\MediaCollections\Filesystem;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
+use Develoopin\MediaLibrary\Support\ImageFactory;
+use Develoopin\MediaLibrary\Support\TemporaryDirectory;
 
 class FileManipulator
 {

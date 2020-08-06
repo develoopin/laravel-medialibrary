@@ -12,7 +12,7 @@ The provided `MediaStream` class that allows you to respond with a stream. Files
 Here's an example on how it can be used:
 
 ```php
-use Spatie\MediaLibrary\Support\MediaStream;
+use Develoopin\MediaLibrary\Support\MediaStream;
 
 class DownloadMediaController
 {

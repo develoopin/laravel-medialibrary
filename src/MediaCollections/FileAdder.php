@@ -1,23 +1,23 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections;
+namespace Develoopin\MediaLibrary\MediaCollections;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Traits\Macroable;
-use Spatie\MediaLibrary\Conversions\ImageGenerators\Image as ImageGenerator;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileUnacceptableForCollection;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnknownType;
-use Spatie\MediaLibrary\MediaCollections\File as PendingFile;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob;
-use Spatie\MediaLibrary\Support\File;
-use Spatie\MediaLibrary\Support\RemoteFile;
+use Develoopin\MediaLibrary\Conversions\ImageGenerators\Image as ImageGenerator;
+use Develoopin\MediaLibrary\HasMedia;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileUnacceptableForCollection;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\UnknownType;
+use Develoopin\MediaLibrary\MediaCollections\File as PendingFile;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob;
+use Develoopin\MediaLibrary\Support\File;
+use Develoopin\MediaLibrary\Support\RemoteFile;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -25,7 +25,9 @@ class FileAdder
 {
     use Macroable;
 
-    protected ?Model $subject;
+//    protected ?Model $subject;
+    /** @var \Illuminate\Database\Eloquent\Model|null subject */
+    protected $subject;
 
     protected ?Filesystem $filesystem;
 
@@ -63,7 +65,22 @@ class FileAdder
         $this->fileNameSanitizer = fn ($fileName) => $this->defaultSanitizer($fileName);
     }
 
-    public function setSubject(Model $subject): self
+    /**
+     * Get the media model class.
+     *
+     * @return string
+     */
+    public function mediaModel()
+    {
+        return config('media-library.media_model');
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model|null $subject
+     *
+     * @return FileAdder
+     */
+    public function setSubject($subject)
     {
         $this->subject = $subject;
 
@@ -214,7 +231,7 @@ class FileAdder
         }
 
         $mediaClass = config('media-library.media_model');
-        /** @var \Spatie\MediaLibrary\MediaCollections\Models\Media $media */
+        /** @var \Develoopin\MediaLibrary\MediaCollections\Models\Media $media */
         $media = new $mediaClass();
 
         $media->name = $this->mediaName;
@@ -223,7 +240,9 @@ class FileAdder
 
         $media->file_name = $this->fileName;
 
-        $media->disk = $this->determineDiskName($diskName, $collectionName);
+//        $media->disk = $this->determineDiskName($diskName, $collectionName);
+        $media->disk = $this->determineDiskName($media, $diskName, $collectionName);
+
         $this->ensureDiskExists($media->disk);
         $media->conversions_disk = $this->determineConversionsDiskName($media->disk, $collectionName);
         $this->ensureDiskExists($media->conversions_disk);
@@ -244,7 +263,12 @@ class FileAdder
 
         $media->fill($this->properties);
 
-        $this->attachMedia($media);
+//        $this->attachMedia($media);
+        if ($this->subject) {
+            $this->attachMedia($media);
+        } else {
+            $this->processMediaItem($this, $media);
+        }
 
         return $media;
     }
@@ -263,8 +287,9 @@ class FileAdder
             throw FileIsTooBig::create($this->pathToFile);
         }
 
-        $mediaClass = config('media-library.media_model');
-        /** @var \Spatie\MediaLibrary\MediaCollections\Models\Media $media */
+        $mediaClass = $this->mediaModel();
+
+        /** @var \Develoopin\MediaLibrary\MediaCollections\Models\Media $media */
         $media = new $mediaClass();
 
         $media->name = $this->mediaName;
@@ -300,14 +325,17 @@ class FileAdder
         return $media;
     }
 
-    protected function determineDiskName(string $diskName, string $collectionName): string
+//    protected function determineDiskName(string $diskName, string $collectionName): string
+    protected function determineDiskName(Media $media, string $diskName, string $collectionName): string
     {
         if ($diskName !== '') {
             return $diskName;
         }
 
-        if ($collection = $this->getMediaCollection($collectionName)) {
-            $collectionDiskName = $collection->diskName;
+//        if ($collection = $this->getMediaCollection($collectionName)) {
+        if ($collection = $this->getMediaCollection($media, $collectionName)) {
+
+                $collectionDiskName = $collection->diskName;
 
             if ($collectionDiskName !== '') {
                 return $collectionDiskName;
@@ -360,25 +388,47 @@ class FileAdder
 
             $class = get_class($this->subject);
 
+//            $class::created(function ($model) {
+//                $model->processUnattachedMedia(function (Media $media, self $fileAdder) use ($model) {
+//                    $this->processMediaItem($model, $media, $fileAdder);
+//                });
+//            });
             $class::created(function ($model) {
-                $model->processUnattachedMedia(function (Media $media, self $fileAdder) use ($model) {
-                    $this->processMediaItem($model, $media, $fileAdder);
+                $model->processUnattachedMedia(function (Media $media, FileAdder $fileAdder) use ($model) {
+                    $this->processMediaItem($fileAdder, $media, $model);
                 });
             });
 
             return;
         }
 
-        $this->processMediaItem($this->subject, $media, $this);
+//        $this->processMediaItem($this->subject, $media, $this);
+        $this->processMediaItem($this, $media, $this->subject);
     }
 
-    protected function processMediaItem(HasMedia $model, Media $media, self $fileAdder)
+//    protected function processMediaItem(HasMedia $model, Media $media, self $fileAdder)
+    /**
+     * Process the media item.
+     *
+     * @param  FileAdder      $fileAdder
+     * @param  Media          $media
+     * @param  HasMedia|null  $model
+     * @throws FileUnacceptableForCollection
+     * @return void
+     */
+    protected function processMediaItem(self $fileAdder, Media $media, $model = null)
     {
-        $this->guardAgainstDisallowedFileAdditions($media, $model);
+//        $this->guardAgainstDisallowedFileAdditions($media, $model);
+        $this->guardAgainstDisallowedFileAdditions($media);
 
         $this->checkGenerateResponsiveImages($media);
 
-        $model->media()->save($media);
+//        $model->media()->save($media);
+        if ($model) {
+            $model->media()->save($media);
+        } else {
+            $media->save();
+        }
 
         if ($fileAdder->file instanceof RemoteFile) {
             $this->filesystem->addRemote($fileAdder->file, $media, $fileAdder->fileName);
@@ -406,8 +456,9 @@ class FileAdder
             dispatch($job);
         }
 
-        if ($collectionSizeLimit = optional($this->getMediaCollection($media->collection_name))->collectionSizeLimit) {
-            $collectionMedia = $this->subject->fresh()->getMedia($media->collection_name);
+//        if ($collectionSizeLimit = optional($this->getMediaCollection($media->collection_name))->collectionSizeLimit) {
+        if ($collectionSizeLimit = optional($this->getMediaCollection($media))->collectionSizeLimit) {
+            $collectionMedia = $this->subject->fresh()->getMedia($media);
 
             if ($collectionMedia->count() > $collectionSizeLimit) {
                 $model->clearMediaCollectionExcept($media->collection_name, $collectionMedia->reverse()->take($collectionSizeLimit));
@@ -415,19 +466,41 @@ class FileAdder
         }
     }
 
-    protected function getMediaCollection(string $collectionName): ?MediaCollection
+    /**
+     * Get a media collection by its name, or via the Media model.
+     *
+     * @param Media $media
+     * @param string|null $collectionName
+     * @return MediaCollection|null
+     */
+//  protected function getMediaCollection(string $collectionName): ?MediaCollection
+    protected function getMediaCollection(Media $media, $collectionName = null): ?MediaCollection
     {
-        $this->subject->registerMediaCollections();
+//        $this->subject->registerMediaCollections();
+        $collectionName = $collectionName ?? $media->collection_name;
 
-        return collect($this->subject->mediaCollections)
-            ->first(fn (MediaCollection $collection) => $collection->name === $collectionName);
+        $media->registerMediaCollections();
+
+        $collections = $media->mediaCollections;
+
+        if ($this->subject) {
+            $this->subject->registerMediaCollections();
+            $collections = array_merge($collections, $this->subject->mediaCollections);
+        }
+
+//        return collect($this->subject->mediaCollections)
+//            ->first(fn (MediaCollection $collection) => $collection->name === $collectionName);
+        return collect($collections)->first(function (MediaCollection $collection) use ($collectionName) {
+            return $collection->name === $collectionName;
+        });
     }
 
     protected function guardAgainstDisallowedFileAdditions(Media $media)
     {
         $file = PendingFile::createFromMedia($media);
 
-        if (! $collection = $this->getMediaCollection($media->collection_name)) {
+//        if (! $collection = $this->getMediaCollection($media->collection_name)) {
+        if (! $collection = $this->getMediaCollection($media)) {
             return;
         }
 

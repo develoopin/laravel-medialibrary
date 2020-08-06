@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\FileAdder;
+namespace Develoopin\MediaLibrary\Tests\Feature\FileAdder;
 
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidUrl;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\RequestDoesNotHaveFile;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnknownType;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidUrl;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\RequestDoesNotHaveFile;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\UnknownType;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
+use Develoopin\MediaLibrary\Tests\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class IntegrationTest extends TestCase

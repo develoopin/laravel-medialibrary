@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\ResponsiveImages;
+namespace Develoopin\MediaLibrary\ResponsiveImages;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class RegisteredResponsiveImages
 {

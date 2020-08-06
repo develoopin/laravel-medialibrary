@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Conversions;
+namespace Develoopin\MediaLibrary\Tests\Conversions;
 
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\Image\Manipulations;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class ConversionTest extends TestCase
 {

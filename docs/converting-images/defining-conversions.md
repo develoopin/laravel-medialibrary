@@ -15,9 +15,9 @@ You should add a method called `registerMediaConversions` to your model. In that
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\HasMedia;
+use Develoopin\MediaLibrary\InteractsWithMedia;
 
 class YourModel extends Model implements HasMedia
 {
@@ -55,7 +55,7 @@ You can register as many media conversions as you want
 
 ```php
 // in your model
-use Spatie\Image\Manipulations;
+use Develoopin\Image\Manipulations;
 
 // ...
 

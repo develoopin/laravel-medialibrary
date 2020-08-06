@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\MediaLibrary\Support;
+namespace Develoopin\MediaLibrary\Support;
 
 class RemoteFile
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\Media;
+namespace Develoopin\MediaLibrary\Tests\Feature\Media;
 
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class ResponsableTest extends TestCase
 {

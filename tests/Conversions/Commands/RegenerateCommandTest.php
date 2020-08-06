@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Conversions\Commands;
+namespace Develoopin\MediaLibrary\Tests\Conversions\Commands;
 
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class RegenerateCommandTest extends TestCase
 {

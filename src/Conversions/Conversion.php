@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions;
+namespace Develoopin\MediaLibrary\Conversions;
 
 use BadMethodCallException;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\Image\Manipulations;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
-/** @mixin \Spatie\Image\Manipulations */
+/** @mixin \Develoopin\Image\Manipulations */
 class Conversion
 {
     protected string $name = '';

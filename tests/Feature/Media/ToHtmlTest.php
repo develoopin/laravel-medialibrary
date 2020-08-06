@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\Media;
+namespace Develoopin\MediaLibrary\Tests\Feature\Media;
 
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithCustomLoadingAttribute;
-use Spatie\Snapshots\MatchesSnapshots;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithCustomLoadingAttribute;
+use Develoopin\Snapshots\MatchesSnapshots;
 
 class ToHtmlTest extends TestCase
 {

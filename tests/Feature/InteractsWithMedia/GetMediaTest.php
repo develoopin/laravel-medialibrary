@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\InteractsWithMedia;
+namespace Develoopin\MediaLibrary\Tests\Feature\InteractsWithMedia;
 
 use DB;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModel;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestModel;
 
 class GetMediaTest extends TestCase
 {

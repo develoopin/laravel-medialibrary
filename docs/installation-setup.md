@@ -14,7 +14,7 @@ The package will automatically register a service provider.
 You need to publish and run the migration:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Develoopin\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
 php artisan migrate
 ```
 
@@ -33,7 +33,7 @@ public function down()
 Publishing the config file is optional:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Develoopin\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
 ```
 
 This is the default content of the config file:
@@ -62,7 +62,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => Spatie\MediaLibrary\MediaCollections\Models\Media::class,
+    'media_model' => Develoopin\MediaLibrary\MediaCollections\Models\Media::class,
 
     'remote' => [
         /*
@@ -87,7 +87,7 @@ return [
          *
          * https://docs.spatie.be/laravel-medialibrary/v8/advanced-usage/generating-responsive-images
          */
-        'width_calculator' => Spatie\MediaLibrary\ResponsiveImages\WidthCalculator\FileSizeOptimizedWidthCalculator::class,
+        'width_calculator' => Develoopin\MediaLibrary\ResponsiveImages\WidthCalculator\FileSizeOptimizedWidthCalculator::class,
 
         /*
          * By default rendering media to a responsive image will add some javascript and a tiny placeholder.
@@ -99,7 +99,7 @@ return [
          * This class will generate the tiny placeholder used for progressive image loading. By default
          * the media library will use a tiny blurred jpg image.
          */
-        'tiny_placeholder_generator' => Spatie\MediaLibrary\ResponsiveImages\TinyPlaceholderGenerator\Blurred::class,
+        'tiny_placeholder_generator' => Develoopin\MediaLibrary\ResponsiveImages\TinyPlaceholderGenerator\Blurred::class,
     ],
 
     /*
@@ -117,18 +117,18 @@ return [
      * This is the class that is responsible for naming conversion files. By default,
      * it will use the filename of the original and concatenate the conversion name to it.
      */
-    'conversion_file_namer' => \Spatie\MediaLibrary\Conversions\DefaultConversionFileNamer::class,
+    'conversion_file_namer' => \Develoopin\MediaLibrary\Conversions\DefaultConversionFileNamer::class,
     
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class,
+    'path_generator' => Develoopin\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class,
 
     /*
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator::class,
+    'url_generator' => Develoopin\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator::class,
 
     /*
      * Whether to activate versioning when urls to files get generated.
@@ -142,22 +142,22 @@ return [
      * the optimizers that will be used by default.
      */
     'image_optimizers' => [
-        Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [
+        Develoopin\ImageOptimizer\Optimizers\Jpegoptim::class => [
             '--strip-all', // this strips out all text information such as comments and EXIF data
             '--all-progressive', // this will make sure the resulting image is a progressive one
         ],
-        Spatie\ImageOptimizer\Optimizers\Pngquant::class => [
+        Develoopin\ImageOptimizer\Optimizers\Pngquant::class => [
             '--force', // required parameter for this package
         ],
-        Spatie\ImageOptimizer\Optimizers\Optipng::class => [
+        Develoopin\ImageOptimizer\Optimizers\Optipng::class => [
             '-i0', // this will result in a non-interlaced, progressive scanned image
             '-o2', // this set the optimization level to two (multiple IDAT compression trials)
             '-quiet', // required parameter for this package
         ],
-        Spatie\ImageOptimizer\Optimizers\Svgo::class => [
+        Develoopin\ImageOptimizer\Optimizers\Svgo::class => [
             '--disable=cleanupIDs', // disabling because it is known to cause troubles
         ],
-        Spatie\ImageOptimizer\Optimizers\Gifsicle::class => [
+        Develoopin\ImageOptimizer\Optimizers\Gifsicle::class => [
             '-b', // required parameter for this package
             '-O3', // this produces the slowest but best results
         ],
@@ -167,11 +167,11 @@ return [
      * These generators will be used to create an image of media files.
      */
     'image_generators' => [
-        Spatie\MediaLibrary\Conversions\ImageGenerators\Image::class,
-        Spatie\MediaLibrary\Conversions\ImageGenerators\Webp::class,
-        Spatie\MediaLibrary\Conversions\ImageGenerators\Pdf::class,
-        Spatie\MediaLibrary\Conversions\ImageGenerators\Svg::class,
-        Spatie\MediaLibrary\Conversions\ImageGenerators\Video::class,
+        Develoopin\MediaLibrary\Conversions\ImageGenerators\Image::class,
+        Develoopin\MediaLibrary\Conversions\ImageGenerators\Webp::class,
+        Develoopin\MediaLibrary\Conversions\ImageGenerators\Pdf::class,
+        Develoopin\MediaLibrary\Conversions\ImageGenerators\Svg::class,
+        Develoopin\MediaLibrary\Conversions\ImageGenerators\Video::class,
     ],
 
     /*
@@ -199,8 +199,8 @@ return [
      * your custom jobs extend the ones provided by the package.
      */
     'jobs' => [
-        'perform_conversions' => \Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob::class,
-        'generate_responsive_images' => \Spatie\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob::class,
+        'perform_conversions' => \Develoopin\MediaLibrary\Conversions\Jobs\PerformConversionsJob::class,
+        'generate_responsive_images' => \Develoopin\MediaLibrary\ResponsiveImages\Jobs\GenerateResponsiveImagesJob::class,
     ],
 ];
 ```

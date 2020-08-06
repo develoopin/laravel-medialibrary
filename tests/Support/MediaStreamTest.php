@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Support;
+namespace Develoopin\MediaLibrary\Tests\Support;
 
 use Illuminate\Support\Facades\Route;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Support\MediaStream;
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Support\MediaStream;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MediaStreamTest extends TestCase

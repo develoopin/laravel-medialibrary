@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\TestSupport\TestModels;
+namespace Develoopin\MediaLibrary\Tests\TestSupport\TestModels;
 
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\Image\Manipulations;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class TestModelWithResponsiveImages extends TestModel
 {

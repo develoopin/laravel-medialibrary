@@ -1,28 +1,29 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections\Models;
+namespace Develoopin\MediaLibrary\MediaCollections\Models;
 
 use DateTimeInterface;
+use Develoopin\MediaLibrary\MediaCollections\FileAdderFactory;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\Conversions\ConversionCollection;
-use Spatie\MediaLibrary\Conversions\ImageGenerators\ImageGeneratorFactory;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Filesystem;
-use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Concerns\CustomMediaProperties;
-use Spatie\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
-use Spatie\MediaLibrary\MediaCollections\Models\Concerns\IsSorted;
-use Spatie\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages;
-use Spatie\MediaLibrary\Support\File;
-use Spatie\MediaLibrary\Support\TemporaryDirectory;
-use Spatie\MediaLibrary\Support\UrlGenerator\UrlGeneratorFactory;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Conversions\ConversionCollection;
+use Develoopin\MediaLibrary\Conversions\ImageGenerators\ImageGeneratorFactory;
+use Develoopin\MediaLibrary\HasMedia;
+use Develoopin\MediaLibrary\MediaCollections\Filesystem;
+use Develoopin\MediaLibrary\MediaCollections\HtmlableMedia;
+use Develoopin\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Develoopin\MediaLibrary\MediaCollections\Models\Concerns\CustomMediaProperties;
+use Develoopin\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
+use Develoopin\MediaLibrary\MediaCollections\Models\Concerns\IsSorted;
+use Develoopin\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages;
+use Develoopin\MediaLibrary\Support\File;
+use Develoopin\MediaLibrary\Support\TemporaryDirectory;
+use Develoopin\MediaLibrary\Support\UrlGenerator\UrlGeneratorFactory;
 
 class Media extends Model implements Responsable, Htmlable
 {
@@ -36,11 +37,137 @@ class Media extends Model implements Responsable, Htmlable
 
     protected $guarded = [];
 
+    /** @var array */
+    public $mediaConversions = [];
+
+    /** @var array */
+    public $mediaCollections = [];
+
+
     protected $casts = [
         'manipulations' => 'array',
         'custom_properties' => 'array',
         'responsive_images' => 'array',
     ];
+
+    /**
+     * Register global media collections.
+     *
+     * @return void
+     */
+    public function registerMediaCollections()
+    {
+        // ...
+    }
+
+    /**
+     * Add a media collection.
+     *
+     * @param string $name
+     * @return MediaCollection
+     */
+    public function addMediaCollection(string $name): MediaCollection
+    {
+        $mediaCollection = MediaCollection::create($name);
+
+        $this->mediaCollections[$name] = $mediaCollection;
+
+        return $mediaCollection;
+    }
+
+    /**
+     * Clear the media's entire media collection.
+     *
+     * @param null $model
+     * @param \Spatie\MediaLibrary\Models\Media[]|\Illuminate\Support\Collection $excludedMedia
+     * @return $this
+     */
+    public function clearMediaCollection($model = null, $excludedMedia = [])
+    {
+        if ($model) {
+            $query = $model->media();
+        } else {
+            $query = static::query()->whereNull('model_type')->whereNull('model_id');
+        }
+
+        $query->where('collection_name', $this->collection_name);
+
+        $excludedMedia = Collection::wrap($excludedMedia);
+
+        if (! $excludedMedia->isEmpty()) {
+            $query->whereNotIn('id', $excludedMedia->pluck('id')->all());
+        }
+
+        // Chunk query for performance
+        $query->orderBy('id')->chunkById(100, function ($media) {
+            $media->each->delete();
+        });
+
+        if (optional($model)->relationLoaded('media')) {
+            unset($model->media);
+        }
+
+        if ($excludedMedia->isEmpty()) {
+            event(new CollectionHasBeenCleared($this->collection_name, $model));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register all media conversions.
+     *
+     * @return void
+     */
+    public function registerAllMediaConversions()
+    {
+        $this->registerMediaCollections();
+
+        collect($this->mediaCollections)->each(function (MediaCollection $mediaCollection) {
+            $actualMediaConversions = $this->mediaConversions;
+
+            $this->mediaConversions = [];
+
+            ($mediaCollection->mediaConversionRegistrations)($this);
+
+            $preparedMediaConversions = collect($this->mediaConversions)
+                ->each(function (Conversion $conversion) use ($mediaCollection) {
+                    $conversion->performOnCollections($mediaCollection->name);
+                })
+                ->values()
+                ->toArray();
+
+            $this->mediaConversions = array_merge($actualMediaConversions, $preparedMediaConversions);
+        });
+
+        $this->registerMediaConversions($this);
+    }
+
+    /**
+     * Register global media conversions.
+     *
+     * @param  Media|null  $media
+     * @return void
+     */
+    public function registerMediaConversions(Media $media = null)
+    {
+        // ...
+    }
+
+    /**
+     * Add a conversion.
+     *
+     * @param string $name
+     * @return Conversion
+     */
+    public function addMediaConversion(string $name): Conversion
+    {
+        $conversion = Conversion::create($name);
+
+        $this->mediaConversions[$name] = $conversion;
+
+        return $conversion;
+    }
 
     public function newCollection(array $models = [])
     {
@@ -51,6 +178,60 @@ class Media extends Model implements Responsable, Htmlable
     {
         return $this->morphTo();
     }
+
+    /**
+     * Determine whether the media is associated with a model, or not.
+     *
+     * @return bool
+     */
+    public function hasModel()
+    {
+        return ! (is_null($this->model_type) || is_null($this->model_id));
+    }
+
+    /**
+     * Add media for the given file.
+     *
+     * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @return \Develoopin\MediaLibrary\FileAdder\FileAdder
+     */
+    public static function add($file)
+    {
+        return app(FileAdderFactory::class)->create($file);
+    }
+
+    /**
+     * Add media from the current request.
+     *
+     * @param string $key
+     * @return \Develoopin\MediaLibrary\FileAdder\FileAdder
+     */
+    public static function addFromRequest($key)
+    {
+        return app(FileAdderFactory::class)->createFromRequest($key);
+    }
+
+    /**
+     * Add multiple media from the current request.
+     *
+     * @param array $keys
+     * @return \Develoopin\MediaLibrary\FileAdder\FileAdder[]
+     */
+    public static function addMultipleFromRequest(array $keys)
+    {
+        return app(FileAdderFactory::class)->createMultipleFromRequest($keys);
+    }
+
+    /**
+     * Add all media from the current request.
+     *
+     * @return \Develoopin\MediaLibrary\FileAdder\FileAdder[]
+     */
+    public static function addAllMediaFromRequest()
+    {
+        return app(FileAdderFactory::class)->createAllFromRequest();
+    }
+
 
     public function getFullUrl(string $conversionName = ''): string
     {
@@ -254,7 +435,7 @@ class Media extends Model implements Responsable, Htmlable
 
         $temporaryFile = $temporaryDirectory->path('/').DIRECTORY_SEPARATOR.$this->file_name;
 
-        /** @var \Spatie\MediaLibrary\MediaCollections\Filesystem $filesystem */
+        /** @var \Develoopin\MediaLibrary\MediaCollections\Filesystem $filesystem */
         $filesystem = app(Filesystem::class);
 
         $filesystem->copyFromMediaLibrary($this, $temporaryFile);
@@ -277,7 +458,7 @@ class Media extends Model implements Responsable, Htmlable
 
     public function stream()
     {
-        /** @var \Spatie\MediaLibrary\MediaCollections\Filesystem $filesystem */
+        /** @var \Develoopin\MediaLibrary\MediaCollections\Filesystem $filesystem */
         $filesystem = app(Filesystem::class);
 
         return $filesystem->getStream($this);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections\Models\Collections;
+namespace Develoopin\MediaLibrary\MediaCollections\Models\Collections;
 
 use Illuminate\Database\Eloquent\Collection;
 

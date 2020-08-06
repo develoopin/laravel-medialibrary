@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections;
+namespace Develoopin\MediaLibrary\MediaCollections;
 
 use Closure;
 use Illuminate\Database\Eloquent\Collection as DbCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\HasMedia;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaRepository
 {
@@ -21,7 +21,7 @@ class MediaRepository
     /**
      * Get all media in the collection.
      *
-     * @param \Spatie\MediaLibrary\HasMedia $model
+     * @param \Develoopin\MediaLibrary\HasMedia $model
      * @param string $collectionName
      * @param array|callable $filter
      *

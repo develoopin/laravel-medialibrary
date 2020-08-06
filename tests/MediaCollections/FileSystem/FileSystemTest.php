@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\MediaCollections\FileSystem;
+namespace Develoopin\MediaLibrary\Tests\MediaCollections\FileSystem;
 
-use Spatie\MediaLibrary\MediaCollections\Filesystem;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\MediaCollections\Filesystem;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class FileSystemTest extends TestCase
 {

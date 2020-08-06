@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections;
+namespace Develoopin\MediaLibrary\MediaCollections;
 
 use Illuminate\Contracts\Support\Htmlable;
-use Spatie\MediaLibrary\Conversions\ConversionCollection;
-use Spatie\MediaLibrary\Conversions\ImageGenerators\Image;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Conversions\ConversionCollection;
+use Develoopin\MediaLibrary\Conversions\ImageGenerators\Image;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class HtmlableMedia implements Htmlable
 {

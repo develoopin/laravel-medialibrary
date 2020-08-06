@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions;
+namespace Develoopin\MediaLibrary\Conversions;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidConversion;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\Image\Manipulations;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidConversion;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class ConversionCollection extends Collection
 {
@@ -24,7 +24,8 @@ class ConversionCollection extends Collection
 
         $this->items = [];
 
-        $this->addConversionsFromRelatedModel($media);
+//        $this->addConversionsFromRelatedModel($media);
+        $this->addConversions($media);
 
         $this->addManipulationsFromDb($media);
 
@@ -42,11 +43,28 @@ class ConversionCollection extends Collection
         return $conversion;
     }
 
+    /**
+     * Add the conversions that are defined on the Media model, or on the related model.
+     *
+     * @param \Develoopin\MediaLibrary\Models\Media $media
+     * @return void
+     */
+    protected function addConversions(Media $media)
+    {
+        $media->registerAllMediaConversions();
+
+        $this->items = $media->mediaConversions;
+
+        if ($media->hasModel()) {
+            $this->addConversionsFromRelatedModel($media);
+        }
+    }
+
     protected function addConversionsFromRelatedModel(Media $media): void
     {
         $modelName = Arr::get(Relation::morphMap(), $media->model_type, $media->model_type);
 
-        /** @var \Spatie\MediaLibrary\HasMedia $model */
+        /** @var \Develoopin\MediaLibrary\HasMedia $model */
         $model = new $modelName();
 
         /*
@@ -62,7 +80,8 @@ class ConversionCollection extends Collection
 
         $model->registerAllMediaConversions($media);
 
-        $this->items = $model->mediaConversions;
+//        $this->items = $model->mediaConversions;
+        $this->items = array_merge($this->items, $model->mediaConversions);
     }
 
     protected function addManipulationsFromDb(Media $media)
@@ -92,7 +111,7 @@ class ConversionCollection extends Collection
 
     protected function addManipulationToConversion(Manipulations $manipulations, string $conversionName)
     {
-        /** @var \Spatie\MediaLibrary\Conversions\Conversion|null $conversion */
+        /** @var \Develoopin\MediaLibrary\Conversions\Conversion|null $conversion */
         $conversion = $this->first(function (Conversion $conversion) use ($conversionName) {
             if (! in_array($this->media->collection_name, $conversion->getPerformOnCollections())) {
                 return false;

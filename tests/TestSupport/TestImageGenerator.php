@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\TestSupport;
+namespace Develoopin\MediaLibrary\Tests\TestSupport;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\Conversions\ImageGenerators\ImageGenerator;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Conversions\ImageGenerators\ImageGenerator;
 
 class TestImageGenerator extends ImageGenerator
 {

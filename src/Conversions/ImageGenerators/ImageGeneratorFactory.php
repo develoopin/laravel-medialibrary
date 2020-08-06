@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions\ImageGenerators;
+namespace Develoopin\MediaLibrary\Conversions\ImageGenerators;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 class ImageGeneratorFactory
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\Media;
+namespace Develoopin\MediaLibrary\Tests\Feature\Media;
 
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidConversion;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidConversion;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class GetPathTest extends TestCase
 {

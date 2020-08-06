@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Support\PathGenerator;
+namespace Develoopin\MediaLibrary\Tests\Support\PathGenerator;
 
 use Illuminate\Config\Repository;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\Conversions\ConversionCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Conversions\ConversionCollection;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class BasePathGeneratorTest extends TestCase
 {

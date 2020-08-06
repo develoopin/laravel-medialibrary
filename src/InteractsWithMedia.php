@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\MediaLibrary;
+namespace Develoopin\MediaLibrary;
 
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -10,26 +10,26 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\MediaCollections\Events\CollectionHasBeenCleared;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidUrl;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeUpdated;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
-use Spatie\MediaLibrary\MediaCollections\FileAdder;
-use Spatie\MediaLibrary\MediaCollections\FileAdderFactory;
-use Spatie\MediaLibrary\MediaCollections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\MediaRepository;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\MediaCollections\Events\CollectionHasBeenCleared;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\InvalidUrl;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeUpdated;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
+use Develoopin\MediaLibrary\MediaCollections\FileAdder;
+use Develoopin\MediaLibrary\MediaCollections\FileAdderFactory;
+use Develoopin\MediaLibrary\MediaCollections\MediaCollection;
+use Develoopin\MediaLibrary\MediaCollections\MediaRepository;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
 
 trait InteractsWithMedia
 {
-    /** @var \Spatie\MediaLibrary\Conversions\Conversion[] */
+    /** @var \Develoopin\MediaLibrary\Conversions\Conversion[] */
     public array $mediaConversions = [];
 
-    /** @var \Spatie\MediaLibrary\MediaCollections\MediaCollection[] */
+    /** @var \Develoopin\MediaLibrary\MediaCollections\MediaCollection[] */
     public array $mediaCollections = [];
 
     protected bool $deletePreservingMedia = false;
@@ -63,11 +63,13 @@ trait InteractsWithMedia
      *
      * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
      */
     public function addMedia($file): FileAdder
     {
-        return app(FileAdderFactory::class)->create($this, $file);
+//        return app(FileAdderFactory::class)->create($this, $file);
+        return app(FileAdderFactory::class)->create($file, $this);
+
     }
 
     /**
@@ -76,16 +78,18 @@ trait InteractsWithMedia
      * @param string $key
      * @param string $disk
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
      */
     public function addMediaFromDisk(string $key, string $disk = null): FileAdder
     {
-        return app(FileAdderFactory::class)->createFromDisk($this, $key, $disk ?: config('filesystems.default'));
+        return app(FileAdderFactory::class)->createFromDisk($key, $disk ?: config('filesystems.default'), $this);
     }
 
     public function addMediaFromRequest(string $key): FileAdder
     {
-        return app(FileAdderFactory::class)->createFromRequest($this, $key);
+//        return app(FileAdderFactory::class)->createFromRequest($this, $key);
+        return app(FileAdderFactory::class)->createFromRequest($key, $this);
+
     }
 
     /**
@@ -93,17 +97,18 @@ trait InteractsWithMedia
      *
      * @param string[] $keys
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder[]
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder[]
      */
     public function addMultipleMediaFromRequest(array $keys)
     {
-        return app(FileAdderFactory::class)->createMultipleFromRequest($this, $keys);
+//        return app(FileAdderFactory::class)->createMultipleFromRequest($this, $keys);
+        return app(FileAdderFactory::class)->createMultipleFromRequest($keys, $this);
     }
 
     /**
      * Add all files from a request.
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder[]
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder[]
      */
     public function addAllMediaFromRequest(): Collection
     {
@@ -116,9 +121,9 @@ trait InteractsWithMedia
      * @param string $url
      * @param string|array ...$allowedMimeTypes
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
      *
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded
+     * @throws \Develoopin\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded
      */
     public function addMediaFromUrl(string $url, ...$allowedMimeTypes): FileAdder
     {
@@ -149,7 +154,8 @@ trait InteractsWithMedia
         }
 
         return app(FileAdderFactory::class)
-            ->create($this, $temporaryFile)
+//            ->create($this, $temporaryFile)
+            ->create($temporaryFile, $this)
             ->usingName(pathinfo($filename, PATHINFO_FILENAME))
             ->usingFileName($filename);
     }
@@ -160,7 +166,7 @@ trait InteractsWithMedia
      *
      * @param string string
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
      */
     public function addMediaFromString(string $text): FileAdder
     {
@@ -181,8 +187,8 @@ trait InteractsWithMedia
      * @param string $base64data
      * @param string|array ...$allowedMimeTypes
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
+     * @throws \Develoopin\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded
      *
      * @throws InvalidBase64Data
      */
@@ -212,7 +218,9 @@ trait InteractsWithMedia
 
         $this->guardAgainstInvalidMimeType($tmpFile, $allowedMimeTypes);
 
-        $file = app(FileAdderFactory::class)->create($this, $tmpFile);
+//        $file = app(FileAdderFactory::class)->create($this, $tmpFile);
+        $file = app(FileAdderFactory::class)->create($tmpFile, $this);
+
 
         return $file;
     }
@@ -222,7 +230,7 @@ trait InteractsWithMedia
      *
      * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
-     * @return \Spatie\MediaLibrary\MediaCollections\FileAdder
+     * @return \Develoopin\MediaLibrary\MediaCollections\FileAdder
      */
     public function copyMedia($file): FileAdder
     {
@@ -386,7 +394,9 @@ trait InteractsWithMedia
             ->getMedia($collectionName)
             ->each(fn(Media $media) => $media->delete());
 
-        event(new CollectionHasBeenCleared($this, $collectionName));
+//        event(new CollectionHasBeenCleared($this, $collectionName));
+        event(new CollectionHasBeenCleared($collectionName, $this));
+
 
         if ($this->mediaIsPreloaded()) {
             unset($this->media);
@@ -399,7 +409,7 @@ trait InteractsWithMedia
      * Remove all media in the given collection except some.
      *
      * @param string $collectionName
-     * @param \Spatie\MediaLibrary\MediaCollections\Models\Media[]|\Illuminate\Support\Collection $excludedMedia
+     * @param \Develoopin\MediaLibrary\MediaCollections\Models\Media[]|\Illuminate\Support\Collection $excludedMedia
      *
      * @return $this
      */
@@ -435,9 +445,9 @@ trait InteractsWithMedia
      * Delete the associated media with the given id.
      * You may also pass a media object.
      *
-     * @param int|\Spatie\MediaLibrary\MediaCollections\Models\Media $mediaId
+     * @param int|\Develoopin\MediaLibrary\MediaCollections\Models\Media $mediaId
      *
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted
+     * @throws \Develoopin\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted
      */
     public function deleteMedia($mediaId): void
     {
@@ -458,7 +468,9 @@ trait InteractsWithMedia
     {
         $conversion = Conversion::create($name);
 
-        $this->mediaConversions[] = $conversion;
+//        $this->mediaConversions[] = $conversion;
+        $this->mediaConversions[$name] = $conversion;
+
 
         return $conversion;
     }
@@ -467,7 +479,8 @@ trait InteractsWithMedia
     {
         $mediaCollection = MediaCollection::create($name);
 
-        $this->mediaCollections[] = $mediaCollection;
+//        $this->mediaCollections[] = $mediaCollection;
+        $this->mediaCollections[$name] = $mediaCollection;
 
         return $mediaCollection;
     }

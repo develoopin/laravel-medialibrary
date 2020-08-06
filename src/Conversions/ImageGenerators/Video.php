@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions\ImageGenerators;
+namespace Develoopin\MediaLibrary\Conversions\ImageGenerators;
 
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Conversions\Conversion;
 
 class Video extends ImageGenerator
 {

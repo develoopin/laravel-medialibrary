@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\FileAdder\MediaConversions;
+namespace Develoopin\MediaLibrary\Tests\Feature\FileAdder\MediaConversions;
 
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileUnacceptableForCollection;
-use Spatie\MediaLibrary\MediaCollections\File;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithConversion;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithoutMediaConversions;
+use Develoopin\MediaLibrary\MediaCollections\Exceptions\FileUnacceptableForCollection;
+use Develoopin\MediaLibrary\MediaCollections\File;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithConversion;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestModelWithoutMediaConversions;
 
 class MediaCollectionTest extends TestCase
 {

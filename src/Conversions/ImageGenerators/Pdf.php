@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\MediaLibrary\Conversions\ImageGenerators;
+namespace Develoopin\MediaLibrary\Conversions\ImageGenerators;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversions\Conversion;
+use Develoopin\MediaLibrary\Conversions\Conversion;
 
 class Pdf extends ImageGenerator
 {
@@ -13,7 +13,7 @@ class Pdf extends ImageGenerator
 
         $pageNumber = $conversion ? $conversion->getPdfPageNumber() : 1;
 
-        (new \Spatie\PdfToImage\Pdf($file))->setPage($pageNumber)->saveImage($imageFile);
+        (new \Develoopin\PdfToImage\Pdf($file))->setPage($pageNumber)->saveImage($imageFile);
 
         return $imageFile;
     }
@@ -24,7 +24,7 @@ class Pdf extends ImageGenerator
             return false;
         }
 
-        if (! class_exists('\\Spatie\\PdfToImage\\Pdf')) {
+        if (! class_exists('\\Develoopin\\PdfToImage\\Pdf')) {
             return false;
         }
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Feature\InteractsWithMedia;
+namespace Develoopin\MediaLibrary\Tests\Feature\InteractsWithMedia;
 
 use File;
-use Spatie\MediaLibrary\MediaLibraryServiceProvider;
-use Spatie\MediaLibrary\Tests\TestCase;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestCustomMediaModel;
-use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModel;
+use Develoopin\MediaLibrary\MediaLibraryServiceProvider;
+use Develoopin\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestCustomMediaModel;
+use Develoopin\MediaLibrary\Tests\TestSupport\TestModels\TestModel;
 
 class DeleteMediaTest extends TestCase
 {

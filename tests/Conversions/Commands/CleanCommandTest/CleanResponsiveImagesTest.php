@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\Conversions\Commands\CleanCommandTest;
+namespace Develoopin\MediaLibrary\Tests\Conversions\Commands\CleanCommandTest;
 
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class CleanResponsiveImagesTest extends TestCase
 {

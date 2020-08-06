@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\MediaLibrary\MediaCollections;
+namespace Develoopin\MediaLibrary\MediaCollections;
 
 use Exception;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\Conversions\ConversionCollection;
-use Spatie\MediaLibrary\Conversions\FileManipulator;
-use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAdded;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Support\File;
-use Spatie\MediaLibrary\Support\PathGenerator\PathGeneratorFactory;
-use Spatie\MediaLibrary\Support\RemoteFile;
+use Develoopin\MediaLibrary\Conversions\ConversionCollection;
+use Develoopin\MediaLibrary\Conversions\FileManipulator;
+use Develoopin\MediaLibrary\MediaCollections\Events\MediaHasBeenAdded;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\Support\File;
+use Develoopin\MediaLibrary\Support\PathGenerator\PathGeneratorFactory;
+use Develoopin\MediaLibrary\Support\RemoteFile;
 
 class Filesystem
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\MediaLibrary\Tests\ResponsiveImages;
+namespace Develoopin\MediaLibrary\Tests\ResponsiveImages;
 
 use Illuminate\Support\Facades\Event;
-use Spatie\MediaLibrary\ResponsiveImages\Events\ResponsiveImagesGenerated;
-use Spatie\MediaLibrary\Tests\TestCase;
+use Develoopin\MediaLibrary\ResponsiveImages\Events\ResponsiveImagesGenerated;
+use Develoopin\MediaLibrary\Tests\TestCase;
 
 class ResponsiveImageGeneratorTest extends TestCase
 {

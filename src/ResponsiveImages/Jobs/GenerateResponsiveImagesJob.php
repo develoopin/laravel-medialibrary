@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\MediaLibrary\ResponsiveImages\Jobs;
+namespace Develoopin\MediaLibrary\ResponsiveImages\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
+use Develoopin\MediaLibrary\MediaCollections\Models\Media;
+use Develoopin\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
 
 class GenerateResponsiveImagesJob implements ShouldQueue
 {
@@ -22,7 +22,7 @@ class GenerateResponsiveImagesJob implements ShouldQueue
 
     public function handle(): bool
     {
-        /** @var \Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator $responsiveImageGenerator */
+        /** @var \Develoopin\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator $responsiveImageGenerator */
         $responsiveImageGenerator = app(ResponsiveImageGenerator::class);
 
         $responsiveImageGenerator->generateResponsiveImages($this->media);
